@@ -10,10 +10,10 @@ Usage
 
 	import logging
 	from splunk_logger import SplunkLogger
-
+    
 	ACCESS_TOKEN = '...'
 	PROJECT_ID = '...'
-
+    
     splunk_logger = SplunkLogger(ACCESS_TOKEN, PROJECT_ID)
     logging.getLogger('').addHandler(splunk_logger)
     
@@ -37,7 +37,8 @@ the real line number and module name are used.
 Enhancements
 ============
 
-There are a couple of things which could be improved in this module:
+There are a couple of things which could be improved in this module
+
  * python-requests module could be used in order to use HTTP's keep-alive and
    avoid creating a new TCP/IP connection for each message sent to Splunk
  * The logger could be refactored to send the messages in an async manner,
