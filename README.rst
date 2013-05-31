@@ -11,8 +11,8 @@ Usage
     import logging
     from splunk_logger import SplunkLogger
     
-	ACCESS_TOKEN = '...'
-	PROJECT_ID = '...'
+    ACCESS_TOKEN = '...'
+    PROJECT_ID = '...'
     
     splunk_logger = SplunkLogger(ACCESS_TOKEN, PROJECT_ID)
     logging.getLogger('').addHandler(splunk_logger)
