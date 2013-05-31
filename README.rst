@@ -8,16 +8,16 @@ Usage
 
 ::
 
-	import logging
-	from splunk_logger import SplunkLogger
+import logging
+from splunk_logger import SplunkLogger
     
-	ACCESS_TOKEN = '...'
-	PROJECT_ID = '...'
+ACCESS_TOKEN = '...'
+PROJECT_ID = '...'
     
-    splunk_logger = SplunkLogger(ACCESS_TOKEN, PROJECT_ID)
-    logging.getLogger('').addHandler(splunk_logger)
+splunk_logger = SplunkLogger(ACCESS_TOKEN, PROJECT_ID)
+logging.getLogger('').addHandler(splunk_logger)
     
-    logging.error('This is sent to splunk')
+logging.error('This is sent to splunk')
     
 After a couple of seconds of waiting for Splunk to process the new information,
 you should be able to see something like this in the web interface:
