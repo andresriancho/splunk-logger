@@ -39,11 +39,11 @@ Enhancements
 
 There are a couple of things which could be improved in this module
 
- * python-requests module could be used in order to use HTTP's keep-alive and
-   avoid creating a new TCP/IP connection for each message sent to Splunk
- * The logger could be refactored to send the messages in an async manner,
-   this will make ``logging.foo()`` calls return immediately instead of waiting
-   for the log message to be sent.  
+* python-requests module could be used in order to use HTTP's keep-alive and
+  avoid creating a new TCP/IP connection for each message sent to Splunk
+* The logger could be refactored to send the messages in an async manner,
+  this will make ``logging.foo()`` calls return immediately instead of waiting
+  for the log message to be sent.  
  
 Pull requests are more than welcome!
 
