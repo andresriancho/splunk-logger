@@ -7,7 +7,7 @@ from os.path import join, dirname
 setup(
       name='splunk_logger',
 
-      version='0.1.1',
+      version='0.1.4',
       license = 'GNU General Public License v2 (GPLv2)',
       platforms='Linux',
       
@@ -21,7 +21,7 @@ setup(
       
       packages=find_packages(),
       include_package_data=True,
-      install_requires=[],
+      install_requires=['requests',],
       
       # https://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers = [

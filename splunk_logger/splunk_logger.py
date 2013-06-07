@@ -1,11 +1,11 @@
 import urllib
-import urllib2
 import socket
 import json
-import base64
 import logging
 import gzip
 import cStringIO
+
+import requests
 
 from .utils import parse_config_file
 
@@ -42,11 +42,14 @@ class SplunkLogger(logging.Handler):
             raise ValueError('Access token and project id need to be set.')
 
     def _set_url_opener(self):
-        raw_values = "%s:%s" % ('x', self.access_token)
-        auth = 'Basic %s' % base64.b64encode(raw_values).strip()
+        # We disable the logging of the requests module to avoid some infinite
+        # recursion errors that might appear.
+        requests_log = logging.getLogger("requests")
+        requests_log.setLevel(logging.CRITICAL)
 
-        self.opener = urllib2.build_opener()
-        self.opener.addheaders = [('Authorization', auth), ('Content-Encoding', 'gzip')]
+        self.session = requests.Session()
+        self.session.auth = ('x', self.access_token)
+        self.session.headers.update({'Content-Encoding': 'gzip'})
 
     def usesTime(self):
         return False
@@ -70,18 +73,15 @@ class SplunkLogger(logging.Handler):
             return
         
         try:
-            self._send_to_splunk(record)
+            response = self._send_to_splunk(record)
         except (KeyboardInterrupt, SystemExit):
             raise
-        except IOError, e:
-            if hasattr(e, 'code'):
-                if e.code == 401:
-                    self._auth_failed = True
-            
-            self.handleError(record)
         except:
             # All errors end here.
             self.handleError(record)
+        else:
+            if response.status_code == 401:
+                self._auth_failed = True
             
     def _send_to_splunk(self, record):
         # http://docs.splunk.com/Documentation/Storm/latest/User/Sourcesandsourcetypes
@@ -101,8 +101,6 @@ class SplunkLogger(logging.Handler):
         params['host'] = host
 
         url = '%s?%s' % (self.url, urllib.urlencode(params))
-        req = urllib2.Request(url, event)
-        response = self.opener.open(req)
-        body = response.read()
-        return body
+        return self.session.post(url, data=event)
+
 

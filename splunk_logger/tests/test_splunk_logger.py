@@ -24,26 +24,27 @@ class TestSplunkLogger(unittest.TestCase):
         PROJECT_ID = 'bar'
         
         splunk_logger = SplunkLogger(access_token=ACCESS_TOKEN, project_id=PROJECT_ID)
-        root = logging.getLogger('')
-        root.addHandler(splunk_logger)
+        unittest_logger = logging.getLogger('unittest')
+        unittest_logger.addHandler(splunk_logger)
         
         devnull = open(os.devnull, 'w')
         with patch('sys.stderr', devnull):
-            logging.error('This is NOT sent to splunk')
+            unittest_logger.error('This is NOT sent to splunk')
         
-        root.handlers.remove(splunk_logger)
+        unittest_logger.handlers.remove(splunk_logger)
+        self.assertEqual(splunk_logger._auth_failed, True)
     
     def test_send_credentials_from_file(self):
         self.assertTrue(os.path.exists('.splunk_logger'), CONFIG_ERROR)
          
         # Get credentials from file
         splunk_logger = SplunkLogger()
-        root = logging.getLogger('')
-        root.addHandler(splunk_logger)
+        unittest_logger = logging.getLogger('unittest')
+        unittest_logger.addHandler(splunk_logger)
         
-        logging.info('This was sent to splunk with credentials from file')
+        unittest_logger.info('This was sent to splunk with credentials from file')
 
-        root.handlers.remove(splunk_logger)
+        unittest_logger.handlers.remove(splunk_logger)
     
     def test_send_credentials_from_params(self):
         self.assertTrue(os.path.exists('.splunk_logger'), CONFIG_ERROR)
@@ -51,9 +52,9 @@ class TestSplunkLogger(unittest.TestCase):
         # Get credentials from file and pass them as params
         project_id, access_token = _parse_config_file_impl('.splunk_logger')
         splunk_logger = SplunkLogger(access_token=access_token, project_id=project_id)
-        root = logging.getLogger('')
-        root.addHandler(splunk_logger)
+        unittest_logger = logging.getLogger('unittest')
+        unittest_logger.addHandler(splunk_logger)
         
-        logging.info('This was sent to splunk with credentials from params')
+        unittest_logger.info('This was sent to splunk with credentials from params')
         
-        root.handlers.remove(splunk_logger)
+        unittest_logger.handlers.remove(splunk_logger)

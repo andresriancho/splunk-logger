@@ -39,7 +39,7 @@ Configuration file
 
 It is always a good idea to avoid hardcoded credentials in your source code.
 The module can fetch the credentials from a YAML file in the current directory
-or the user's home. The filename is named ".splunk_logger" and has the following
+or the user's home. The filename is named ``.splunk_logger`` and has the following
 format:
 
 ::
@@ -65,11 +65,10 @@ Enhancements
 
 There are a couple of things which could be improved in this module
 
-* python-requests module could be used in order to use HTTP's keep-alive and
-  avoid creating a new TCP/IP connection for each message sent to Splunk
 * The logger could be refactored to send the messages in an async manner,
   this will make ``logging.foo()`` calls return immediately instead of waiting
   for the log message to be sent.  
+* Send messages in batches
  
 Pull requests are more than welcome!
 
