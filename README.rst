@@ -14,7 +14,7 @@ Usage
     ACCESS_TOKEN = '...'
     PROJECT_ID = '...'
     
-    splunk_logger = SplunkLogger(ACCESS_TOKEN, PROJECT_ID)
+    splunk_logger = SplunkLogger(access_token=ACCESS_TOKEN, project_id=PROJECT_ID)
     logging.getLogger('').addHandler(splunk_logger)
     
     logging.error('This is sent to splunk')
@@ -33,6 +33,32 @@ you should be able to see something like this in the web interface:
 
 When using the code in a real Python program, and not from the python console,
 the real line number and module name are used.
+
+Configuration file
+==================
+
+It is always a good idea to avoid hardcoded credentials in your source code.
+The module can fetch the credentials from a YAML file in the current directory
+or the user's home. The filename is named ".splunk_logger" and has the following
+format:
+
+::
+
+    credentials:
+        project_id: ...
+        access_token: ...
+
+Once the file is in place, you can use the module as follows:
+
+::
+
+    import logging
+    from splunk_logger import SplunkLogger
+    
+    splunk_logger = SplunkLogger()
+    logging.getLogger('').addHandler(splunk_logger)
+    
+    logging.error('This is sent to splunk')
 
 Enhancements
 ============
