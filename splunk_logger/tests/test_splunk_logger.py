@@ -3,9 +3,11 @@ import unittest
 import logging
 
 from mock import patch
+from nose.plugins.skip import SkipTest
 
 from splunk_logger import SplunkLogger
 from splunk_logger.utils import _parse_config_file_impl
+
 
 CONFIG_ERROR = '''\
 The file .splunk_logger with correct credentials is required to run the unittests.
@@ -35,7 +37,7 @@ class TestSplunkLogger(unittest.TestCase):
         self.assertEqual(splunk_logger._auth_failed, True)
     
     def test_send_credentials_from_file(self):
-        self.assertTrue(os.path.exists('.splunk_logger'), CONFIG_ERROR)
+        self._verify_properly_configured()
          
         # Get credentials from file
         splunk_logger = SplunkLogger()
@@ -47,7 +49,7 @@ class TestSplunkLogger(unittest.TestCase):
         unittest_logger.handlers.remove(splunk_logger)
     
     def test_send_credentials_from_params(self):
-        self.assertTrue(os.path.exists('.splunk_logger'), CONFIG_ERROR)
+        self._verify_properly_configured()
          
         # Get credentials from file and pass them as params
         project_id, access_token = _parse_config_file_impl('.splunk_logger')
@@ -58,3 +60,7 @@ class TestSplunkLogger(unittest.TestCase):
         unittest_logger.info('This was sent to splunk with credentials from params')
         
         unittest_logger.handlers.remove(splunk_logger)
+
+    def _verify_properly_configured(self):
+        if not os.path.exists('.splunk_logger'):
+            raise SkipTest(CONFIG_ERROR)
