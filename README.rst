@@ -3,6 +3,11 @@ Splunk logger
 
 A logging handler for Splunk. Lets you send information to Splunk directly from your Python code.
 
+.. image:: https://circleci.com/gh/andresriancho/splunk-logger.png?circle-token=9f01ff83329279fae1c29ffe902abec56c7f222b
+   :alt: Build Status
+   :align: right
+   :target: https://circleci.com/gh/andresriancho/splunk-logger
+   
 Usage
 =====
 
