@@ -17,6 +17,7 @@ develop-eggs
 .installed.cfg
 lib
 lib64
+*~
 
 # Installer logs
 pip-log.txt
@@ -33,3 +34,8 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+.idea
+
+# splunk logger specifics
+.splunk_logger
+
