@@ -7,7 +7,7 @@ from os.path import join, dirname
 setup(
       name='splunk_logger',
 
-      version='0.1.6',
+      version='0.2.0',
       license = 'GNU General Public License v2 (GPLv2)',
       platforms='Linux',
       

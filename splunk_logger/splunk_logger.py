@@ -7,7 +7,7 @@ import cStringIO
 
 import requests
 
-from .utils import parse_config_file
+from .utils import parse_config_file, get_config_from_env
 
 
 class SplunkLogger(logging.Handler):
@@ -37,6 +37,9 @@ class SplunkLogger(logging.Handler):
             self.access_token = access_token
         else:
             self.project_id, self.access_token = parse_config_file()
+
+            if self.project_id is None or self.access_token is None:
+                self.project_id, self.access_token = get_config_from_env()
 
         if self.access_token is None or self.project_id is None:
             raise ValueError('Access token and project id need to be set.')

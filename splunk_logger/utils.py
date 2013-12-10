@@ -17,7 +17,8 @@ def parse_config_file():
             return project_id, access_token
     else:
         return None, None
-       
+
+
 def _parse_config_file_impl(filename):
     '''
     Format for the file is:
@@ -40,3 +41,8 @@ def _parse_config_file_impl(filename):
         return project_id, access_token
     except:
         return None, None
+
+
+def get_config_from_env():
+    return (os.environ.get('SPLUNK_PROJECT_ID', None),
+            os.environ.get('SPLUNK_ACCESS_TOKEN', None))

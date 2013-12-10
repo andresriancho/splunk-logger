@@ -65,6 +65,14 @@ Once the file is in place, you can use the module as follows:
     
     logging.error('This is sent to splunk')
 
+
+Configuration through environment variables
+===========================================
+
+Another project ID and access token source which this module accepts are the ``SPLUNK_PROJECT_ID``
+and ``SPLUNK_ACCESS_TOKEN``. Once again, you can use them to avoid hard-coding
+credentials in the source code.
+
 Enhancements
 ============
 
