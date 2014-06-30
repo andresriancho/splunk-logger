@@ -1,0 +1,6 @@
+test:
+  override:
+
+    - "pylint --msg-template='{msg_id}:{line:3d},{column}: {obj}: {msg}' -E `ls -d */`"
+
+    - python -W ignore::DeprecationWarning -W ignore::RuntimeWarning setup.py test
