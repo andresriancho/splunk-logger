@@ -112,6 +112,6 @@ class SplunkLogger(logging.Handler):
                   'host': host}
 
         url = '%s?%s' % (self.url, urllib.urlencode(params))
-        return self.session.post(url, data=event)
+        return self.session.post(url, data=event, verify=False)
 
 
