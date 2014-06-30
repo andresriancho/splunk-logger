@@ -96,6 +96,12 @@ There are a couple of things which could be improved in this module
  
 Pull requests are more than welcome!
 
+References
+==========
+
+This package implements communication with Storm Splunk as specified `here
+<http://docs.splunk.com/Documentation/Storm/Storm/User/UseStormsRESTAPI>`_ .
+
 Reporting bugs
 ==============
 

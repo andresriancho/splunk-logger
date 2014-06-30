@@ -93,7 +93,7 @@ class SplunkLogger(logging.Handler):
         else:
             if response.status_code == 401:
                 self._auth_failed = True
-            
+
     def _send_to_splunk(self, record):
         # http://docs.splunk.com/Documentation/Storm/latest/User/Sourcesandsourcetypes
         sourcetype = 'json_no_timestamp'
@@ -107,7 +107,7 @@ class SplunkLogger(logging.Handler):
         event = json.dumps(event_dict)
         event = self._compress(event)
         
-        params = {'project': self.project_id,
+        params = {'index': self.project_id,
                   'sourcetype': sourcetype,
                   'host': host}
 
