@@ -11,15 +11,21 @@ A logging handler for Splunk. Lets you send information to Splunk directly from 
 Usage
 =====
 
+Make sure you replace the ``***`` with your credentials and specific API domain
+and run:
+
 ::
 
     import logging
     from splunk_logger import SplunkLogger
     
-    ACCESS_TOKEN = '...'
-    PROJECT_ID = '...'
+    ACCESS_TOKEN = '***'
+    PROJECT_ID = '***'
+    API_DOMAIN = 'api-***.data.splunkstorm.com'
     
-    splunk_logger = SplunkLogger(access_token=ACCESS_TOKEN, project_id=PROJECT_ID)
+    splunk_logger = SplunkLogger(access_token=ACCESS_TOKEN,
+                                 project_id=PROJECT_ID,
+                                 api_domain=API_DOMAIN)
     logging.getLogger('').addHandler(splunk_logger)
     
     logging.error('This is sent to splunk')
@@ -50,8 +56,9 @@ format:
 ::
 
     credentials:
-        project_id: ...
-        access_token: ...
+        project_id: ***
+        access_token: ***
+        api_domain: api-***.data.splunkstorm.com
 
 Once the file is in place, you can use the module as follows:
 
@@ -59,7 +66,8 @@ Once the file is in place, you can use the module as follows:
 
     import logging
     from splunk_logger import SplunkLogger
-    
+
+    # No credentials specified here
     splunk_logger = SplunkLogger()
     logging.getLogger('').addHandler(splunk_logger)
     
@@ -69,9 +77,12 @@ Once the file is in place, you can use the module as follows:
 Configuration through environment variables
 ===========================================
 
-Another project ID and access token source which this module accepts are the ``SPLUNK_PROJECT_ID``
-and ``SPLUNK_ACCESS_TOKEN``. Once again, you can use them to avoid hard-coding
-credentials in the source code.
+Another configuration source accepted by splunk logger is environment variables.
+Once again, you can use them to avoid hard-coding credentials in the source code:
+
+* ``SPLUNK_PROJECT_ID``
+* ``SPLUNK_ACCESS_TOKEN``
+* ``SPLUNK_API_DOMAIN``
 
 Enhancements
 ============
@@ -85,10 +96,22 @@ There are a couple of things which could be improved in this module
  
 Pull requests are more than welcome!
 
+References
+==========
+
+This package implements communication with Storm Splunk as specified `here
+<http://docs.splunk.com/Documentation/Storm/Storm/User/UseStormsRESTAPI>`_ .
+
 Reporting bugs
 ==============
 
 Report your issues and feature requests in `Splunk Logger's issue
 tracker <https://github.com/andresriancho/splunk-logger/issues>`_ and I'll
 be more than glad to fix them.
+
+Change log
+==========
+
+* 30 Jun 2014: User needs to specify API endpoint domain. Fixes #2
+
 
