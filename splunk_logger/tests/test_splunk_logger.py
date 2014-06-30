@@ -51,6 +51,7 @@ class TestSplunkLogger(unittest.TestCase):
                              ' from file')
 
         unittest_logger.handlers.remove(splunk_logger)
+        self.assertEqual(splunk_logger._auth_failed, False)
     
     def test_send_credentials_from_params(self):
         self._verify_properly_configured()
@@ -67,6 +68,7 @@ class TestSplunkLogger(unittest.TestCase):
                              ' from params')
         
         unittest_logger.handlers.remove(splunk_logger)
+        self.assertEqual(splunk_logger._auth_failed, False)
 
     def _verify_properly_configured(self):
         if not os.path.exists('.splunk_logger'):
