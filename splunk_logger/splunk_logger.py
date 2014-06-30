@@ -14,35 +14,43 @@ class SplunkLogger(logging.Handler):
     """
     A class to send messages to splunk storm using their API
     """
+    # Required format for splunk storm
+    INPUT_URL_FMT = 'https://%s/1/inputs/http'
 
-    # The default is to log to splunk storm
-    INPUT_URL = 'https://api.splunkstorm.com/1/inputs/http'
-
-
-    def __init__(self, access_token=None, project_id=None, input_url=INPUT_URL):
+    def __init__(self, access_token=None, project_id=None, api_domain=None):
         logging.Handler.__init__(self)
         
-        self.url = input_url
-        self._set_auth(access_token, project_id)
+        self._set_auth(access_token, project_id, api_domain)
+        self.url = self.INPUT_URL_FMT % self.api_domain
+
         self._set_url_opener()
         
         # Handle errors in authentication
         self._auth_failed = False
         
-    def _set_auth(self, access_token, project_id):
+    def _set_auth(self, access_token, project_id, api_domain):
         # The access token and project id passed as parameter override the ones
         # configured in the .splunk_logger file.
-        if access_token is not None and project_id is not None:
+        if access_token is not None\
+        and project_id is not None\
+        and api_domain is not None:
             self.project_id = project_id
             self.access_token = access_token
-        else:
-            self.project_id, self.access_token = parse_config_file()
+            self.api_domain = api_domain
 
-            if self.project_id is None or self.access_token is None:
-                self.project_id, self.access_token = get_config_from_env()
+        else:
+            # Try to get the credentials form the configuration file
+            self.project_id, self.access_token, self.api_domain = parse_config_file()
+
+            if self.project_id is None\
+            or self.access_token is None\
+            or self.api_domain is None:
+                # Try to get the credentials form the environment variables
+                self.project_id, self.access_token, self.api_domain = get_config_from_env()
 
         if self.access_token is None or self.project_id is None:
-            raise ValueError('Access token and project id need to be set.')
+            raise ValueError('Access token, project id and API endpoint domain'
+                             ' need to be set.')
 
     def _set_url_opener(self):
         # We disable the logging of the requests module to avoid some infinite
@@ -58,9 +66,9 @@ class SplunkLogger(logging.Handler):
         return False
 
     def _compress(self, input_str):
-        '''
+        """
         Compress the log message in order to send less bytes to the wire.
-        '''
+        """
         compressed_bits = cStringIO.StringIO()
         
         f = gzip.GzipFile(fileobj=compressed_bits, mode='wb')
@@ -100,8 +108,8 @@ class SplunkLogger(logging.Handler):
         event = self._compress(event)
         
         params = {'project': self.project_id,
-                  'sourcetype': sourcetype}
-        params['host'] = host
+                  'sourcetype': sourcetype,
+                  'host': host}
 
         url = '%s?%s' % (self.url, urllib.urlencode(params))
         return self.session.post(url, data=event)
