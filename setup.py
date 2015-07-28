@@ -8,7 +8,7 @@ setup(
       name='splunk_logger',
 
       version='1.0.0',
-      license = 'GNU General Public License v2 (GPLv2)',
+      license = 'GNU LGPL v3.0',
       platforms='Linux',
       
       description=('Splunk logger sends log messages to splunk directly from'
@@ -27,7 +27,7 @@ setup(
       classifiers = [
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
+        'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',
         'Natural Language :: English',
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python',
